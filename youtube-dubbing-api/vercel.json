@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/dubbing",
+      "destination": "/src/api/dubbingController.ts"
+    }
+  ]
+}
