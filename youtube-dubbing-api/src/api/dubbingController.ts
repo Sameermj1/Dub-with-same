@@ -1,23 +1,23 @@
-import fetch from 'node-fetch';
+import { Request, Response } from 'express';
+import { processDubbing } from '../services/dubbingService';
 
-export const dubbingController = async (req: any, res: any) => {
+export const dubbingController = async (req: Request, res: Response) => {
   try {
-    const { videoUrl } = req.body;
+    const { url, language } = req.body;
 
-    // Placeholder for the video dubbing logic.
-    const response = await fetch('https://api.dubbing.example', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: videoUrl,
-      }),
-    });
+    if (!url || !language) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
 
-    const data = await response.json();
-    res.status(200).json(data);
+    const dubbedVideoUrl = await processDubbing(url, language);
+    res.json({ dubbedVideoUrl });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred", error);
+    }
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
