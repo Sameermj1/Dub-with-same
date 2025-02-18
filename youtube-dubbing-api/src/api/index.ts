@@ -1,14 +1,13 @@
-import express, { Request, Response } from 'express';
-import { handler as dubbingController } from './dubbingController';
+import express from 'express';
+import { dubbingController } from './dubbingController';
 
 const app = express();
+const port = process.env.PORT || 3000;
+
 app.use(express.json());
 
-app.post('/api/dub', (req: Request, res: Response) => {
-  dubbingController(req, res);
-});
+app.post('/dubbing', dubbingController);
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
